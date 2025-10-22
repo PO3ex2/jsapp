@@ -1,0 +1,11 @@
+[
+  {
+    "time": 1,
+    "type": "moving_object",
+    "pos": [960, 540],
+    "direction": [1, 0],
+    "speed": 200,
+    "lifetime": 5.0,
+    "spin_speed": 180
+  }
+]
