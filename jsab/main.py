@@ -76,7 +76,6 @@ def load_level(path):
     with open(path, "r") as f:
         data = json.load(f)
     return sorted(data, key=lambda e: e["time"])
-    level_events = parse_random_in_data(data)
 
 # Input & Dash
 def get_input():
@@ -117,6 +116,7 @@ def spawn_trail_particles():
 # Game loop
 while True:
     level_events = load_level("jsab/levels/level1.json")
+    level_events = parse_random_in_data(level_events)
     dt = clock.tick(60) / 1000
 
     for event in pygame.event.get():
@@ -160,9 +160,9 @@ while True:
         etype = event["type"]
         if etype == "spike":
             spikes.append(Spike(tuple(event["pos"])))
-            print("spike spawned")
         elif etype == "moving_object":
-            direction = pygame.Vector2(event.get("direction", [1, 0]))
+            angle = event.get("direction_angle", 0)
+            direction = pygame.Vector2(1, 0).rotate(angle)
             mo = MovingObject(
                 sprite=spike_img,
                 size=(60, 60),
@@ -174,7 +174,6 @@ while True:
                 spin_speed=event.get("spin_speed", 0)
             )
             moving_objects.append(mo)
-            print("mo spawned")
         elif etype == "piston":
             pistons.append(Piston(
                 start_pos=tuple(event["pos"]),
@@ -186,7 +185,6 @@ while True:
                 lifetime=event.get("lifetime", None),
                 delay=event.get("delay", 1.0)
             ))
-            print("piston spawned")
 
         event_index += 1
 
