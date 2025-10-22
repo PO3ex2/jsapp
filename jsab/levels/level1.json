@@ -56,5 +56,16 @@
     "speed": 200,
     "lifetime": 5.0,
     "spin_speed": 180
-  }
+  },
+  {
+    "time": 3.0,
+    "type": "piston",
+    "pos": [0, 540],
+    "direction": [1, 0],
+    "color": [255, 155, 150],
+    "length": 800,
+    "width": 50,
+    "speed": 6000,
+    "lifetime": 3.0
+}
 ]

@@ -3,29 +3,6 @@ import pygame
 import math
 import random
 
-class Spike:
-    def __init__(self, pos, size=60):
-        self.pos = pygame.Vector2(pos)
-        self.size = size
-        self.color = (255, 0, 150)
-        self.points = self.generate_spike_points()
-
-    def generate_spike_points(self):
-        half_base = self.size / 2
-        height = self.size
-        return [
-            (self.pos.x, self.pos.y - height),
-            (self.pos.x - half_base, self.pos.y),
-            (self.pos.x + half_base, self.pos.y)
-        ]
-
-    def draw(self, surface):
-        pygame.draw.polygon(surface, self.color, self.points)
-
-    def collides_with(self, player_pos, player_radius):
-        distance = self.pos.distance_to(player_pos)
-        return distance < self.size / 1.5 + player_radius
-
 class MovingObject:
     def __init__(self, sprite, size, color, start_pos, direction, speed, lifetime, spin_speed=0):
         self.original_sprite = pygame.transform.scale(sprite.copy(), size)

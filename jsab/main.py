@@ -5,7 +5,7 @@ import random
 import re
 import math
 import json
-from enemies import Spike, MovingObject, Piston
+from enemies import MovingObject, Piston
 from graphics import Particle, draw_player
 
 # Setup
@@ -50,7 +50,6 @@ level_start_time = pygame.time.get_ticks()
 event_index = 0
 
 particles = []
-spikes = []
 moving_objects = []
 pistons = []
 
@@ -124,9 +123,7 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_j:
-                spikes.append(Spike((WIDTH // 2, HEIGHT // 2)))
-            elif event.key == pygame.K_k:
+            if event.key == pygame.K_k:
                 obj = MovingObject(
                     sprite=spike_img,
                     size=(60, 60),
@@ -146,7 +143,7 @@ while True:
                     length=WIDTH,
                     width=50,
                     speed=15000,
-                    lifetime=1,                    
+                    lifetime=1,
                     delay=0
                 ))
 
@@ -158,17 +155,15 @@ while True:
     while event_index < len(level_events) and level_events[event_index]["time"] <= elapsed:
         event = level_events[event_index]
         etype = event["type"]
-        if etype == "spike":
-            spikes.append(Spike(tuple(event["pos"])))
-        elif etype == "moving_object":
+        if etype == "moving_object":
             angle = event.get("direction_angle", 0)
-            direction = pygame.Vector2(1, 0).rotate(angle)
+            obj_dir = pygame.Vector2(1, 0).rotate(angle)
             mo = MovingObject(
                 sprite=spike_img,
                 size=(60, 60),
-                color=(255, 0, 150),
+                color=event.get("color", (255,0,150)),
                 start_pos=tuple(event["pos"]),
-                direction=direction,
+                direction=obj_dir,
                 speed=event.get("speed", 100),
                 lifetime=event.get("lifetime", 5.0),
                 spin_speed=event.get("spin_speed", 0)
@@ -178,7 +173,7 @@ while True:
             pistons.append(Piston(
                 start_pos=tuple(event["pos"]),
                 direction=pygame.Vector2(event["direction"]),
-                color=(255, 0, 150),
+                color=event.get("color", (255,0,150)),
                 length=event["length"],
                 width=event.get("width", 40),
                 speed=event.get("speed", 300),
@@ -220,14 +215,6 @@ while True:
         spawn_trail_particles()
 
     if not invincible:
-        for spike in spikes:
-            if spike.collides_with(player_pos, radius):
-                player_health -= 1
-                invincible = True
-                last_hit_time = pygame.time.get_ticks()
-                knockback_dir = (player_pos - spike.pos).normalize()
-                player_vel = knockback_dir * knockback_strength
-                break
         for obj in moving_objects:
             if obj.collides_with(player_pos, radius):
                 player_health -= 1
@@ -256,8 +243,6 @@ while True:
     screen.fill((20, 20, 30))
     for p in particles:
         p.draw(screen)
-    for spike in spikes:
-        spike.draw(screen)
     for obj in moving_objects:
         obj.draw(screen)
     for piston in pistons:
