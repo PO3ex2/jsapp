@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 
 # Assets
 try:
-    spike_img = pygame.image.load("jsab/assets/spike_ball.png").convert_alpha()
+    spike_img = pygame.image.load("jsab/assets/spike_ball_full.png").convert_alpha()
 except:
     spike_img = pygame.Surface((40, 40), pygame.SRCALPHA)
     pygame.draw.polygon(spike_img, (255, 0, 150), [(20, 0), (0, 40), (40, 40)])
