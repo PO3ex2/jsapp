@@ -3,14 +3,20 @@ import pygame
 import sys
 import random
 import re
-import math
+import tkinter as tk
+
 import json
 from enemies import MovingObject, Piston
 from graphics import Particle, draw_player
 
 # Setup
 pygame.init()
-WIDTH, HEIGHT = 1920, 1080
+
+root = tk.Tk()
+WIDTH = root.winfo_screenwidth()
+HEIGHT = root.winfo_screenheight()
+root.destroy()
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("JSAB Player Controller")
 clock = pygame.time.Clock()
@@ -114,7 +120,7 @@ def spawn_trail_particles():
 
 # Game loop
 while True:
-    level_events = load_level("jsab/levels/level1.json")
+    level_events = load_level("jsapp/jsab/levels/level1.json")
     level_events = parse_random_in_data(level_events)
     dt = clock.tick(60) / 1000
 
